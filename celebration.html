@@ -2,19 +2,31 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Félicitations 🎉</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="celebration-page">
 
 
-<div class="container">
-    <h1>🎉 Félicitations !!! 🎉</h1>
-    <p>Tu viens de rendre quelqu’un très heureux 💖</p>
-    <canvas id="confetti"></canvas>
-</div>
+<canvas id="fxCanvas" class="fx-canvas"></canvas>
 
 
-<script src="js/confetti.js"></script>
+<main class="celebration-container">
+    <h1 id="congratsTitle">🎉 Félicitations, tu as gagné un cœur ! 🎉</h1>
+    <p id="congratsMsg">Ta réponse a illuminé la journée de quelqu'un 💖</p>
+
+
+    <div class="actions">
+        <a href="index.html" class="btn">Retour</a>
+        <button id="toggleLights" class="btn ghost">Éteindre/Allumer les feux</button>
+    </div>
+
+
+    <div id="hearts" class="hearts"></div>
+</main>
+
+
+<script src="js/celebration.js"></script>
 </body>
 </html>

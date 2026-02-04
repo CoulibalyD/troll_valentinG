@@ -56,3 +56,60 @@ button {
     position: absolute;
     left: 150px;
 }
+
+/* --- global (garder le reste du style existant) --- */
+* { box-sizing: border-box; }
+html,body { height: 100%; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+
+/* --- page celebration --- */
+.celebration-page { background: linear-gradient(180deg, #ffefef 0%, #fff6f0 50%, #fff 100%); overflow: hidden; }
+.fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+
+.celebration-container {
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+    margin: 6vh auto;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+    padding: 36px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+
+.celebration-container h1 { font-size: clamp(1.6rem, 3.5vw, 2.6rem); margin-bottom: 12px; color: #d81e5b; }
+.celebration-container p { margin-bottom: 18px; color: #333; font-size: 1.05rem; }
+
+.actions { display:flex; gap:12px; justify-content:center; margin-top: 10px; }
+.btn { padding: .6rem 1.1rem; border-radius: 999px; border: none; text-decoration: none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; background: linear-gradient(90deg,#ff4e50,#f9d423); color:white; font-weight:600; }
+.btn.ghost { background: transparent; color:#d81e5b; border: 2px solid rgba(216,30,91,0.12); }
+
+
+/* Floating hearts container (DOM based hearts animated by CSS) */
+.hearts { position: absolute; inset: 0; pointer-events: none; z-index:1; overflow: visible; }
+.heart {
+    position: absolute; width: 36px; height: 36px; transform: translate(-50%,-50%) scale(0.9);
+    background: linear-gradient(180deg,#ff6b8a,#ff3b6f);
+    clip-path: path('M 10 30 A 10 10 0 0 1 30 30 L 20 44 Z'); /* fallback, browsers differ */
+    border-radius: 50% 50% 45% 45% / 55% 55% 40% 40%;
+    opacity: 0.95;
+    will-change: transform, opacity;
+    animation: floatUp linear;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0.7); opacity:0 }
+    10% { opacity:1 }
+    100% { transform: translateY(-140vh) scale(1.05); opacity:0 }
+}
+
+
+/* Responsive tweaks */
+@media (max-width:600px) {
+    .celebration-container { margin: 4vh 12px; padding: 24px; }
+    .heart { width: 26px; height: 26px; }
+}
