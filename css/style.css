@@ -1,115 +1,143 @@
+/* ========== RESET / BASE ========== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html, body { height: 100%; }
 
+/* ========== PAGE PRINCIPALE ========== */
 body {
     background: linear-gradient(135deg, #ff4e50, #f9d423);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-
-.container {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-
-h1 {
-    margin-bottom: 30px;
-    color: #ff4e50;
-}
-
-.buttons {
-    position: relative;
-    height: 100px;
-}
-
-
-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-
-#yesBtn {
-    background: #ff4e50;
-    color: white;
-}
-
-
-#noBtn {
-    background: #ccc;
-    position: absolute;
-    left: 150px;
-}
-
-/* --- global (garder le reste du style existant) --- */
-* { box-sizing: border-box; }
-html,body { height: 100%; }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
-
-/* --- page celebration --- */
-.celebration-page { background: linear-gradient(180deg, #ffefef 0%, #fff6f0 50%, #fff 100%); overflow: hidden; }
-.fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-
-
+/* conteneur commun */
+.container,
 .celebration-container {
-    position: relative;
-    z-index: 2;
-    max-width: 920px;
-    margin: 6vh auto;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.95);
     padding: 36px;
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
 }
 
+/* boutons */
+button, .btn {
+    padding: .6rem 1.1rem;
+    border-radius: 999px;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    cursor: pointer;
+    background: linear-gradient(90deg,#ff4e50,#f9d423);
+    color: white;
+    font-weight: 600;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+button:active, .btn:active { transform: translateY(1px); }
 
-.celebration-container h1 { font-size: clamp(1.6rem, 3.5vw, 2.6rem); margin-bottom: 12px; color: #d81e5b; }
+/* ========== CELEBRATION PAGE ========== */
+.celebration-page {
+    background: linear-gradient(180deg, #ffefef 0%, #fff6f0 50%, #fff 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+/* canvas plein écran pour FX (confetti / fireworks) */
+.fx-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* container central (au dessus du canvas) */
+.celebration-container {
+    position: relative;
+    z-index: 5;
+    max-width: 920px;
+    margin: 6vh auto;
+    backdrop-filter: blur(6px);
+}
+
+/* text */
+.celebration-container h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    margin-bottom: 12px;
+    color: #d81e5b;
+}
 .celebration-container p { margin-bottom: 18px; color: #333; font-size: 1.05rem; }
 
+/* actions */
 .actions { display:flex; gap:12px; justify-content:center; margin-top: 10px; }
-.btn { padding: .6rem 1.1rem; border-radius: 999px; border: none; text-decoration: none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; background: linear-gradient(90deg,#ff4e50,#f9d423); color:white; font-weight:600; }
 .btn.ghost { background: transparent; color:#d81e5b; border: 2px solid rgba(216,30,91,0.12); }
 
+/* ========== HEARTS OVERLAY (DOM) ========== */
+/* placer le conteneur en fixed pour flotter sur toute la page */
+.hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10; /* au-dessus du container */
+    overflow: visible;
+}
 
-/* Floating hearts container (DOM based hearts animated by CSS) */
-.hearts { position: absolute; inset: 0; pointer-events: none; z-index:1; overflow: visible; }
+/* création du cœur via transform + pseudo-éléments (compatible) */
 .heart {
-    position: absolute; width: 36px; height: 36px; transform: translate(-50%,-50%) scale(0.9);
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    transform: translate(-50%,-50%) rotate(45deg);
     background: linear-gradient(180deg,#ff6b8a,#ff3b6f);
-    clip-path: path('M 10 30 A 10 10 0 0 1 30 30 L 20 44 Z'); /* fallback, browsers differ */
-    border-radius: 50% 50% 45% 45% / 55% 55% 40% 40%;
-    opacity: 0.95;
+    border-radius: 8px 8px 2px 2px;
     will-change: transform, opacity;
-    animation: floatUp linear;
+    opacity: 0.95;
+    animation-name: floatUp;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    /* force hardware accel */
+    transform-origin: center;
+    backface-visibility: hidden;
 }
+/* lobes du cœur */
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: 50%;
+}
+.heart::before { top: -50%; left: 0; }
+.heart::after  { left: -50%; top: 0; }
+
+/* animation */
 @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.7); opacity:0 }
-    10% { opacity:1 }
-    100% { transform: translateY(-140vh) scale(1.05); opacity:0 }
+    0%   { transform: translate(-50%,0) rotate(45deg) scale(.75); opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: translate(-50%,-140vh) rotate(45deg) scale(1.05); opacity: 0; }
 }
 
+/* ========== ACCESSIBILITY: reduce motion ========== */
+@media (prefers-reduced-motion: reduce) {
+    .fx-canvas, .heart { animation: none !important; transition: none !important; }
+}
 
-/* Responsive tweaks */
-@media (max-width:600px) {
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
     .celebration-container { margin: 4vh 12px; padding: 24px; }
     .heart { width: 26px; height: 26px; }
 }
